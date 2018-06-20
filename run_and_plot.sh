@@ -17,16 +17,22 @@ gcc -o hello-time-host hello-host.c -O3
 # docker doesn't let you do it like this...
 #docker exec -t milkyway bash -c "ntpd -gq && service ntp start"
 
+if [[ `uname` == "Linux" ]]; then
+    GETDATE="date"
+else
+    GETDATE="gdate"
+fi
+
 # Unix time (host time) before running executable, Unix time (docker time) when executed inside docker, Unix time (host time) after running executable
 for i in {1..100}
 do
-    echo -n $(($(gdate +%s%N)))" " >> output-docker.txt && docker exec -t milkyway bash -c "/workspace/hello-time-docker" && echo $(($(gdate +%s%N))) >> output-docker.txt 
+    echo -n $(($($GETDATE +%s%N)))" " >> output-docker.txt && docker exec -t milkyway bash -c "/workspace/hello-time-docker" && echo $(($($GETDATE +%s%N))) >> output-docker.txt 
 done
 
 # Unix time (host time) before running executable, Unix time (host time) when executed on the host system, Unix time (host time) after running executable
 for i in {1..100}
 do
-    echo -n $(($(gdate +%s%N)))" " >> output-host.txt && ./hello-time-host && echo $(($(gdate +%s%N))) >> output-host.txt 
+    echo -n $(($($GETDATE +%s%N)))" " >> output-host.txt && ./hello-time-host && echo $(($($GETDATE +%s%N))) >> output-host.txt 
 done
 
 # Produce plots
