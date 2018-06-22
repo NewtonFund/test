@@ -1,7 +1,9 @@
-docker-time.png
-hello-time-docker
-hello-time-host
-native-time.png
-output-docker.txt
-output-host.txt
-
+io-time-docker
+io-time-host
+cal-time-docker
+cal-time-host
+*.txt
+*.png
+~*
+._*
+.DS*
